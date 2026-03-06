@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiet Dissent | Done-For-You AI for Nashville Small Business</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --offblack: #111111;
+      --surface: #161616;
+      --border: rgba(255,255,255,0.08);
+      --muted: rgba(255,255,255,0.38);
+      --body: rgba(255,255,255,0.72);
+      --white: #f5f2ed;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200,169,110,0.12);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.01em; color: var(--white); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--accent); color: var(--black);
+      padding: 0.55rem 1.2rem; border-radius: 3px;
+      font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: 0.3s; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ─── SECTIONS ─── */
+    section { position: relative; }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding-bottom: 5rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(200,169,110,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,169,110,0.04) 0%, transparent 60%);
+    }
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      max-width: 800px;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.35s forwards;
+    }
+    .hero-headline em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      max-width: 520px;
+      color: var(--body);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.65s forwards;
+    }
+    .btn-primary {
+      background: var(--accent); color: var(--black);
+      padding: 0.85rem 2rem; border-radius: 3px;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost {
+      border: 1px solid var(--border); color: var(--body);
+      padding: 0.85rem 2rem; border-radius: 3px;
+      font-size: 0.85rem; letter-spacing: 0.05em;
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
+    .scroll-hint {
+      position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0; animation: fadeIn 1s ease 1.2s forwards;
+    }
+    .scroll-hint::after {
+      content: ''; display: block; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ─── PROBLEM ─── */
+    #problem { padding: 7rem 0; background: var(--offblack); }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .problem-list { list-style: none; margin-top: 2rem; }
+    .problem-list li {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--body);
+      font-size: 0.95rem;
+      display: flex; align-items: flex-start; gap: 0.8rem;
+    }
+    .problem-list li::before {
+      content: '—'; color: var(--accent); flex-shrink: 0; margin-top: 0.1rem;
+    }
+    .problem-callout {
+      margin-top: 2rem;
+      padding: 1.5rem 1.75rem;
+      border-left: 2px solid var(--accent);
+      background: var(--accent-dim);
+      border-radius: 0 4px 4px 0;
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--white);
+    }
+    .problem-question {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.35;
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .problem-answer {
+      color: var(--body);
+      font-size: 0.97rem;
+      line-height: 1.75;
+    }
+
+    /* ─── APPROACH ─── */
+    #approach { padding: 8rem 0; background: var(--black); }
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      max-width: 700px;
+    }
+    .section-subtitle {
+      color: var(--body);
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 4rem;
+    }
+    .approach-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 4rem;
+    }
+    .approach-card {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+      transition: background 0.3s;
+    }
+    .approach-card:hover { background: #1c1c1c; }
+    .card-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin-bottom: 0.8rem;
+    }
+    .card-body {
+      color: var(--body);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .approach-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .approach-col h4 {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    .tag-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .tag-list span {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--body); font-size: 0.88rem;
+    }
+    .tag-list span::before {
+      content: ''; display: block; width: 5px; height: 5px;
+      border-radius: 50%; background: var(--accent); flex-shrink: 0;
+    }
+    .tag-list.no span::before { background: var(--muted); }
+    .tag-list.no span { color: var(--muted); }
+
+    /* ─── AI ─── */
+    #ai { padding: 8rem 0; background: var(--offblack); }
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 3.5rem;
+    }
+    .ai-card {
+      background: var(--surface);
+      padding: 3rem 2.5rem;
+    }
+    .ai-card-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .ai-card h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .ai-card p {
+      color: var(--body);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .ai-examples { display: flex; flex-direction: column; gap: 0.6rem; }
+    .ai-examples span {
+      color: var(--muted);
+      font-size: 0.83rem;
+      display: flex; align-items: center; gap: 0.65rem;
+    }
+    .ai-examples span::before {
+      content: '→'; color: var(--accent); font-size: 0.75rem;
+    }
+    .ai-pull {
+      margin-top: 3rem;
+      padding: 2rem 2.5rem;
+      border-left: 2px solid var(--accent);
+      background: var(--accent-dim);
+      border-radius: 0 4px 4px 0;
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--white);
+    }
+
+    /* ─── STATS ─── */
+    #work { padding: 8rem 0; background: var(--black); }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 3.5rem 0;
+    }
+    .stat-cell {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .case-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2rem;
+      transition: border-color 0.3s;
+      cursor: pointer;
+    }
+    .case-card:hover { border-color: var(--accent); }
+    .case-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    .case-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+    .case-body {
+      color: var(--body);
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+
+    /* ─── PROCESS / HOW WE WORK ─── */
+    #diagnosis { padding: 8rem 0; background: var(--offblack); }
+    .process-intro {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+      align-items: end;
+    }
+    .steps { display: flex; flex-direction: column; gap: 1.5px; }
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      background: var(--surface);
+      padding: 2rem;
+      transition: background 0.25s;
+    }
+    .step:hover { background: #1c1c1c; }
+    .step-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+    .step-content {}
+    .step-week {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .step-title {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+    .step-body {
+      color: var(--body);
+      font-size: 0.85rem;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .step-deliverables {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .deliverable {
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+    }
+
+    /* ─── TESTIMONIAL ─── */
+    #testimonial { padding: 7rem 0; background: var(--black); }
+    .testimonial-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .quote-mark {
+      font-family: var(--serif);
+      font-size: 5rem;
+      line-height: 0.5;
+      color: var(--accent);
+      opacity: 0.4;
+      margin-bottom: 1.5rem;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      line-height: 1.55;
+      font-style: italic;
+      color: var(--white);
+      margin-bottom: 1.75rem;
+    }
+    .quote-attr {
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+    }
+    .quote-attr strong { color: var(--body); display: block; margin-top: 0.3rem; }
+
+    /* ─── CONTACT ─── */
+    #contact { padding: 8rem 0; background: var(--offblack); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-steps { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.75rem; }
+    .contact-step { display: flex; gap: 1.25rem; }
+    .contact-step-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      border: 1px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.68rem; color: var(--accent);
+    }
+    .contact-step-body h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .contact-step-body p { color: var(--muted); font-size: 0.83rem; line-height: 1.6; }
+    .pricing-note {
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--accent-dim);
+    }
+    .pricing-note p { color: var(--body); font-size: 0.88rem; line-height: 1.65; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .form-group label { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--muted); }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 130px; resize: vertical; }
+    .form-group select option { background: var(--surface); }
+    .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .form-submit:hover { opacity: 0.88; }
+    .form-note { margin-top: 0.75rem; color: var(--muted); font-size: 0.78rem; text-align: center; }
+
+    /* ─── FAQ ─── */
+    #faq { padding: 8rem 0; background: var(--black); }
+    .faq-filters {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .faq-filter {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .faq-filter.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 0;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--white);
+      gap: 1rem;
+    }
+    .faq-q .icon {
+      width: 22px; height: 22px; flex-shrink: 0;
+      border: 1px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; color: var(--muted);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .faq-item.open .faq-q .icon {
+      transform: rotate(45deg);
+      border-color: var(--accent); color: var(--accent);
+    }
+    .faq-a {
+      display: none;
+      padding: 0 0 1.5rem;
+      color: var(--body);
+      font-size: 0.88rem;
+      line-height: 1.75;
+      max-width: 700px;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ─── FOOTER CTA ─── */
+    #footer-cta { padding: 8rem 0 5rem; background: var(--offblack); }
+    .footer-cta-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .footer-cta-inner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2;
+      max-width: 700px;
+      margin-bottom: 1rem;
+    }
+    .footer-cta-inner p {
+      color: var(--body);
+      font-size: 1rem;
+      max-width: 480px;
+      margin-bottom: 2rem;
+    }
+    .email-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-top: 2rem;
+    }
+    .email-row a {
+      color: var(--body);
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .email-row a:hover { color: var(--accent); }
+    .email-row span { color: var(--border); }
+
+    footer {
+      padding: 2.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { font-family: var(--serif); font-size: 0.95rem; }
+    .footer-tagline { color: var(--muted); font-size: 0.78rem; }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { color: var(--muted); font-size: 0.78rem; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--body); }
+    .footer-copy { color: var(--muted); font-size: 0.72rem; width: 100%; text-align: right; }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.1); }
+    }
+
+    /* ─── COUNTER ANIMATION ─── */
+    .count-up { display: inline-block; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .problem-grid, .process-intro, .contact-grid,
+      .approach-split { grid-template-columns: 1fr; gap: 2.5rem; }
+      .approach-cards { grid-template-columns: 1fr; }
+      .ai-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+      .cases { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .section-inner { padding: 0 1.25rem; }
+      #hero .section-inner { padding: 0 1.25rem 0; }
+      #hero { padding-bottom: 4rem; }
+      .hero-headline { font-size: clamp(2.2rem, 8vw, 3rem); }
+      .step { grid-template-columns: 1fr; gap: 0.5rem; }
+      .step-num { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .footer-copy { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#hero" class="nav-logo">Quiet Dissent</a>
+  <ul class="nav-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#work">Results</a></li>
+    <li><a href="#diagnosis">Process</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Diagnosis</a>
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="section-inner" style="position:relative;z-index:2;padding-top:120px;">
+    <p class="hero-label">Nashville · Operations-First AI</p>
+    <h1 class="hero-headline">
+      Stop losing money<br>to <em>things you<br>can't see.</em>
+    </h1>
+    <p class="hero-sub">
+      We find the calls you're missing, the time your team is wasting, and the handoffs nobody's tracking — then we fix them with done-for-you AI your staff will actually use.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request Free Diagnosis →</a>
+      <a href="#work" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+  <a href="#problem" class="scroll-hint">Scroll to explore</a>
+</section>
+
+<!-- ─── PROBLEM ─── -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="problem-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">The Real Problem</p>
+        <h2 class="problem-question">Your business is running on memory,<br>not systems.</h2>
+        <ul class="problem-list">
+          <li>Calls going unanswered because your team is already busy</li>
+          <li>Follow-ups that only happen when someone remembers</li>
+          <li>Scheduling living in someone's head, not a process</li>
+          <li>96 minutes lost every day to manual status updates and context switching</li>
+          <li>New leads going cold while you're serving the ones already in the door</li>
+        </ul>
+        <blockquote class="problem-callout">
+          The problem isn't your people. It's that your systems are making them work harder than they need to.
+        </blockquote>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p class="section-eyebrow">Sound Familiar?</p>
+        <p class="problem-question">What happens when you step away for a week?</p>
+        <p class="problem-answer">
+          If the answer involves missed calls, stalled projects, and decisions only you can make — your business is depending on heroics instead of structure. You shouldn't have to be the system.<br><br>
+          Most small businesses in Nashville are quietly losing $120,000+ a year to missed calls alone. The fix isn't working harder. It's removing the manual steps that slow everything down.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── APPROACH ─── -->
+<section id="approach">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">How We Work</p>
+      <h2 class="section-title">We don't install software and leave. We do the work.</h2>
+      <p class="section-subtitle">
+        Unlike national platforms or enterprise consultants, we start by mapping how your business actually runs — the unwritten rules, the real workflows, the gaps that don't show up in any dashboard.
+      </p>
+    </div>
+    <div class="approach-cards">
+      <div class="approach-card reveal">
+        <div class="card-num">01 / Diagnose</div>
+        <h3 class="card-title">Find the leak first.</h3>
+        <p class="card-body">We spend time inside your operation — observing calls, reviewing handoffs, mapping what actually happens versus what your process says should happen. Most consultants skip this. We never do.</p>
+      </div>
+      <div class="approach-card reveal reveal-delay-2">
+        <div class="card-num">02 / Design</div>
+        <h3 class="card-title">Build for your reality, not a template.</h3>
+        <p class="card-body">We design AI systems around your specific workflows, your team's skills, and your industry's compliance requirements. Healthcare scheduling, legal intake, service dispatch — each one built from scratch for you.</p>
+      </div>
+      <div class="approach-card reveal reveal-delay-3">
+        <div class="card-num">03 / Install</div>
+        <h3 class="card-title">Done-for-you. No tech degree needed.</h3>
+        <p class="card-body">We handle the setup, training, and integration. We provide plain-language guides and hands-on sessions so your team actually adopts it — not just tolerates it. And we stick around to make sure it holds.</p>
+      </div>
+    </div>
+    <div class="approach-split reveal">
+      <div class="approach-col">
+        <h4>What We Build</h4>
+        <div class="tag-list">
+          <span>AI voice receptionists (24/7 call coverage)</span>
+          <span>Automated lead capture and follow-up</span>
+          <span>Appointment scheduling systems</span>
+          <span>CRM integrations and workflow automations</span>
+          <span>Operational language and process documentation</span>
+          <span>Decision frameworks that run without you</span>
+        </div>
+      </div>
+      <div class="approach-col">
+        <h4>What We Don't Do</h4>
+        <div class="tag-list no">
+          <span>Sell you software and disappear</span>
+          <span>Use jargon you have to Google</span>
+          <span>Build on platforms your team can't maintain</span>
+          <span>Replace your staff with bots</span>
+          <span>Create a dependency on us to function</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AI ─── -->
+<section id="ai">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">AI, Explained Simply</p>
+      <h2 class="section-title">You don't need to understand AI. You just need it to work.</h2>
+      <p class="section-subtitle">
+        AI is no longer just for tech companies. It's how service businesses in Nashville are recapturing missed calls, cutting admin time, and finally leaving the office at a reasonable hour. There are two kinds. Here's what they mean for you.
+      </p>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-card reveal">
+        <div class="ai-card-label">Type One</div>
+        <h3>Rule-Based Automation</h3>
+        <p>Handles the repetitive stuff — the tasks your team does the same way every time. Predictable, reliable, and fast. Once set up, it just runs.</p>
+        <div class="ai-examples">
+          <span>Answering and routing inbound calls</span>
+          <span>Booking and confirming appointments</span>
+          <span>Sending follow-up messages after inquiries</span>
+          <span>Updating your CRM automatically</span>
+        </div>
+      </div>
+      <div class="ai-card reveal reveal-delay-2">
+        <div class="ai-card-label">Type Two</div>
+        <h3>Judgment-Augmenting AI</h3>
+        <p>Handles the contextual work — the tasks that used to require someone paying close attention. Adapts to context, summarizes information, and supports decision-making at scale.</p>
+        <div class="ai-examples">
+          <span>Triaging and summarizing inbound inquiries</span>
+          <span>Drafting responses to common customer questions</span>
+          <span>Recognizing patterns in scheduling and demand</span>
+          <span>Generating content and client communications</span>
+        </div>
+      </div>
+    </div>
+    <div class="ai-pull reveal" style="margin-top:2px;">
+      "AI isn't a threat to your team. It's what gives them their day back — and gives you peace of mind when you're not in the building."
+    </div>
+  </div>
+</section>
+
+<!-- ─── WORK / STATS ─── -->
+<section id="work">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">The Numbers</p>
+      <h2 class="section-title">Operational waste is expensive. We find it and fix it.</h2>
+      <p class="section-subtitle">
+        Most of this waste is invisible — buried in handoffs, missed calls, and processes that only work when the right person is in the room.
+      </p>
+    </div>
+    <div class="stats-row reveal">
+      <div class="stat-cell">
+        <div class="stat-num">96<span style="font-size:1.5rem;">min</span></div>
+        <div class="stat-label">Lost daily per employee to manual coordination and context switching</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">62<span style="font-size:1.5rem;">%</span></div>
+        <div class="stat-label">Of calls go unanswered in service industries when staff are occupied</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">13<span style="font-size:1.5rem;">hrs</span></div>
+        <div class="stat-label">Returned per week, on average, after AI implementation for SMBs</div>
+      </div>
+    </div>
+    <div class="cases">
+      <div class="case-card reveal">
+        <div class="case-tag">Founder Dependency</div>
+        <h3 class="case-title">The owner who couldn't leave the building</h3>
+        <p class="case-body">A 30-person service company where every approval, every exception, every last-minute decision ran through one person. We mapped the dependency, documented the decision logic, and installed a system that made the owner optional — not irreplaceable.</p>
+      </div>
+      <div class="case-card reveal reveal-delay-2">
+        <div class="case-tag">Missed Revenue</div>
+        <h3 class="case-title">$1,200 per call. Missed daily.</h3>
+        <p class="case-body">A home services company losing qualified leads to voicemail because their team was in the field. We deployed a 24/7 AI receptionist that captured contact info, qualified the lead, and booked the callback automatically. First month: zero missed leads.</p>
+      </div>
+      <div class="case-card reveal reveal-delay-3">
+        <div class="case-tag">Capacity Recovery</div>
+        <h3 class="case-title">40 hours a week. Gone to coordination.</h3>
+        <p class="case-body">A small healthcare office spending nearly a full-time staff week just on scheduling, rescheduling, and patient reminders. We automated the workflow end-to-end. Staff time shifted from phone admin to patient care within the first 30 days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ─── -->
+<section id="diagnosis">
+  <div class="section-inner">
+    <div class="process-intro">
+      <div class="reveal">
+        <p class="section-eyebrow">The Process</p>
+        <h2 class="section-title">Diagnosis first. Everything else follows.</h2>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p style="color:var(--body);font-size:0.95rem;line-height:1.75;">
+          We don't quote before we understand. Every engagement starts with a real look at how your operation works — not how you think it works. What we find usually surprises people. What we build around it always makes sense.
+        </p>
+        <div style="margin-top:1.5rem;">
+          <a href="#contact" class="btn-primary">Start with a Diagnosis →</a>
+        </div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-week">Weeks 1–2</div>
+          <h3 class="step-title">Operational Diagnosis</h3>
+          <p class="step-body">We observe how your business actually operates — calls, workflows, handoffs, scheduling. No assumptions. We identify where time is disappearing and where revenue is leaking before we touch a single tool.</p>
+          <div class="step-deliverables">
+            <span class="deliverable">Revenue leak audit</span>
+            <span class="deliverable">Workflow friction map</span>
+            <span class="deliverable">Dependency analysis</span>
+            <span class="deliverable">Quick-win roadmap</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-week">Weeks 2–3</div>
+          <h3 class="step-title">Operational Language & Design</h3>
+          <p class="step-body">We document the unwritten rules of your business — the triage logic, the routing decisions, the handoff points — and turn them into structured systems your team can follow and your AI can mirror.</p>
+          <div class="step-deliverables">
+            <span class="deliverable">Process documentation</span>
+            <span class="deliverable">Triage and routing logic</span>
+            <span class="deliverable">Communication architecture</span>
+            <span class="deliverable">AI configuration specs</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-week">Weeks 3–4</div>
+          <h3 class="step-title">Done-For-You Installation</h3>
+          <p class="step-body">We build and deploy the automation — voice agents, scheduling systems, CRM integrations, follow-up workflows. We train your team in plain English and stay on-call for the first 30 days to make sure it sticks.</p>
+          <div class="step-deliverables">
+            <span class="deliverable">Live AI deployment</span>
+            <span class="deliverable">Staff training sessions</span>
+            <span class="deliverable">Plain-language user guides</span>
+            <span class="deliverable">30-day support window</span>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-week">Ongoing</div>
+          <h3 class="step-title">Continuity & Optimization</h3>
+          <p class="step-body">Your systems run without you — and without us. Optional monthly retainer available for businesses that want a fractional AI partner to optimize performance, train new staff, and evolve the system as your business grows.</p>
+          <div class="step-deliverables">
+            <span class="deliverable">Performance monitoring</span>
+            <span class="deliverable">Monthly optimization review</span>
+            <span class="deliverable">New staff onboarding</span>
+            <span class="deliverable">90-day independence check</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIAL ─── -->
+<section id="testimonial">
+  <div class="section-inner">
+    <div class="testimonial-inner reveal">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">I didn't realize how much was running on my memory until they put it on paper. Three weeks later we had systems. Three months later, I took my first real vacation in four years.</p>
+      <div class="quote-attr">
+        CEO, 50-person creative agency · Nashville, TN
+        <strong>After operational diagnosis and AI installation</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">Get Started</p>
+        <h2 class="section-title">Start with a conversation.<br>No pitch deck required.</h2>
+        <div class="contact-steps">
+          <div class="contact-step">
+            <div class="contact-step-icon">01</div>
+            <div class="contact-step-body">
+              <h4>Operational Diagnosis</h4>
+              <p>A 2-week deep look at how your business actually runs. We find the leaks before we recommend anything.</p>
+            </div>
+          </div>
+          <div class="contact-step">
+            <div class="contact-step-icon">02</div>
+            <div class="contact-step-body">
+              <h4>Language & Framework</h4>
+              <p>We document your unwritten rules and design AI systems around them, not generic templates.</p>
+            </div>
+          </div>
+          <div class="contact-step">
+            <div class="contact-step-icon">03</div>
+            <div class="contact-step-body">
+              <h4>Done-For-You Installation</h4>
+              <p>We build and deploy everything directly into your existing workflows. No heavy platforms. No change fatigue.</p>
+            </div>
+          </div>
+          <div class="contact-step">
+            <div class="contact-step-icon">04</div>
+            <div class="contact-step-body">
+              <h4>Independence Confirmation</h4>
+              <p>The goal is systems that work without us. We verify that before we consider the engagement complete.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pricing-note">
+          <p><strong style="color:var(--white);">Investment:</strong> Diagnostic assessments start at $500–$1,500. Full implementation packages from $2,500. Monthly advisory retainers available. Scope and pricing defined after your initial conversation — no surprises.</p>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <h3 style="font-family:var(--serif);font-size:1.3rem;margin-bottom:0.5rem;">Request a Diagnosis</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.75rem;">Tell us what's not working. We respond within 24 hours.</p>
+        <div class="form-group">
+          <label>Name *</label>
+          <input type="text" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" placeholder="Business name" />
+        </div>
+        <div class="form-group">
+          <label>Industry</label>
+          <select>
+            <option value="">Select your industry</option>
+            <option>Healthcare / Medical Office</option>
+            <option>Home Services (HVAC, Plumbing, Roofing)</option>
+            <option>Legal Services</option>
+            <option>Creative / Agency</option>
+            <option>Retail / Hospitality</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>What's your biggest operational headache? *</label>
+          <textarea placeholder="E.g., 'We're missing calls when we're in the field' or 'Scheduling takes too much of our time'"></textarea>
+        </div>
+        <button class="form-submit">Request Diagnosis</button>
+        <p class="form-note">Typical response time: within 24 hours</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">Common Questions</p>
+      <h2 class="section-title">If you're asking, you're in the right place.</h2>
+    </div>
+    <div class="faq-filters reveal" style="margin-top:2rem;">
+      <button class="faq-filter active" data-cat="all">All</button>
+      <button class="faq-filter" data-cat="operations">Operations</button>
+      <button class="faq-filter" data-cat="ai">AI & Technology</button>
+      <button class="faq-filter" data-cat="investment">Pricing</button>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item" data-cat="operations">
+        <div class="faq-q">How is this different from hiring a regular consultant?<span class="icon">+</span></div>
+        <div class="faq-a">Most consultants give you a report and leave. We stay through implementation. We build the actual systems, train your team, and don't consider the job done until things are running without us. We also start from your real operation — not a framework we've applied to every other client.</div>
+      </div>
+      <div class="faq-item" data-cat="operations">
+        <div class="faq-q">We already have a process. Why would we need this?<span class="icon">+</span></div>
+        <div class="faq-a">Most businesses that think they have solid processes also have a key person whose memory is carrying most of the load. Our diagnosis isn't about judging what you built — it's about revealing what's actually happening versus what's documented. The gap is usually where the waste lives.</div>
+      </div>
+      <div class="faq-item" data-cat="ai">
+        <div class="faq-q">Do I need to understand AI to work with you?<span class="icon">+</span></div>
+        <div class="faq-a">No. That's our job. We explain everything in plain English, provide video tutorials and written guides, and train your team hands-on. We've worked with business owners who still use paper scheduling — and we built them systems that work beautifully.</div>
+      </div>
+      <div class="faq-item" data-cat="ai">
+        <div class="faq-q">Will AI replace my staff?<span class="icon">+</span></div>
+        <div class="faq-a">No. AI handles the repetitive tasks that drain your team — answering the same questions, chasing down appointments, manual data entry. That frees your people to focus on work that actually requires a human. Most teams that adopt our systems tell us their jobs feel better, not threatened.</div>
+      </div>
+      <div class="faq-item" data-cat="ai">
+        <div class="faq-q">Is this HIPAA-compliant for healthcare?<span class="icon">+</span></div>
+        <div class="faq-a">Yes. Healthcare is one of our primary verticals. We build all patient-facing systems with HIPAA compliance as a baseline — not an afterthought. We'll walk you through the data governance specifics before any implementation begins.</div>
+      </div>
+      <div class="faq-item" data-cat="investment">
+        <div class="faq-q">What does it cost?<span class="icon">+</span></div>
+        <div class="faq-a">Diagnostic assessments start at $500–$1,500. Full done-for-you implementation packages run $2,500–$10,000 depending on scope. Monthly advisory retainers (for ongoing optimization and support) are available at $1,000–$2,500/month. We give you clear pricing before any work begins — no scope creep, no surprise invoices.</div>
+      </div>
+      <div class="faq-item" data-cat="investment">
+        <div class="faq-q">How long before we see results?<span class="icon">+</span></div>
+        <div class="faq-a">Most clients see measurable impact within the first 30 days — typically in call capture rates, staff hours recovered, and scheduling efficiency. Full ROI on implementation typically arrives within 4–8 months, often sooner for businesses with high call volume or significant manual coordination overhead.</div>
+      </div>
+      <div class="faq-item" data-cat="operations">
+        <div class="faq-q">Can you work with remote or distributed teams?<span class="icon">+</span></div>
+        <div class="faq-a">Yes. We're Nashville-based but work with businesses across the region. Our process includes on-site observation for local clients and structured remote discovery for those outside the area. The systems we build are designed to work regardless of where your team is located.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER CTA ─── -->
+<section id="footer-cta">
+  <div class="section-inner">
+    <div class="footer-cta-inner reveal">
+      <h2>Ready to see what's costing you?</h2>
+      <p>Start with a conversation. No commitment, no pitch deck — just honest observation and a clear picture of what we find.</p>
+      <a href="#contact" class="btn-primary">Request Your Diagnosis →</a>
+      <div class="email-row">
+        <a href="mailto:hello@quietdissent.com">hello@quietdissent.com</a>
+        <span>·</span>
+        <span style="color:var(--muted);font-size:0.8rem;">Nashville, TN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-logo">Quiet Dissent</div>
+    <div class="footer-tagline">Done-for-you AI for Nashville small business.</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#work">Results</a></li>
+    <li><a href="#diagnosis">Process</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© Quiet Dissent. All rights reserved.</div>
+</footer>
+
+<script>
+  // ─── SCROLL REVEAL ───
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ─── FAQ ───
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ─── FAQ FILTERS ───
+  document.querySelectorAll('.faq-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.faq-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  });
+
+  // ─── HAMBURGER (placeholder) ───
+  document.querySelector('.hamburger').addEventListener('click', () => {
+    // Mobile nav would expand here
+  });
+</script>
+</body>
+</html>
